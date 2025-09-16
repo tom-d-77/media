@@ -100,7 +100,13 @@ class ThumbnailService
         // Enforce format conversions if needed. This replaces the actual
         // thumbnail-configuration with one that also enforces the target format
         if ($configuration->getFormat() === null) {
-            $targetFormat = Arrays::getValueByPath($this->formatConversions, $asset->getMediaType());
+            try {
+                $targetFormat = Arrays::getValueByPath($this->formatConversions, $asset->getMediaType());
+            } catch (\Exception $exception) {
+                $this->logger->alert($exception->getMessage());
+                $this->logger->alert($exception->getTraceAsString());
+                return null;
+            }
             if (is_string($targetFormat)) {
                 $configuration = $this->applyFormatToThumbnailConfiguration($configuration, $targetFormat);
             }
