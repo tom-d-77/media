@@ -104,7 +104,6 @@ class ThumbnailService
                 $targetFormat = Arrays::getValueByPath($this->formatConversions, $asset->getMediaType());
             } catch (\Exception $exception) {
                 $this->logger->alert($exception->getMessage());
-                $this->logger->alert($exception->getTraceAsString());
                 return null;
             }
             if (is_string($targetFormat)) {
